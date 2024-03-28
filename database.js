@@ -2,9 +2,9 @@ const pg = require('pg');
 const env_variables = require("dotenv");
 
 const client = new pg.Client({
-    user: 'postgres',
-    host: 'localhost',
-    database: 'NodejsProjeDB',
+    user: env_variables.config().parsed.USER,
+    host: env_variables.config().parsed.hostname,
+    database: env_variables.config().parsed.database,
     password: env_variables.config().parsed.DATABASE_PASSWORD,
     port: 5432, // PostgreSQL varsayılan portu
 });

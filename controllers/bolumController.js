@@ -3,7 +3,7 @@ const database = require("../database");
 const bolumEkle = async function (req , res) {
     console.log(req.body);
     try{
-        await database.client.query(`INSERT INTO bolum (name) VALUES ('${req.body.bolumadi}')`);   
+        await database.client.query(`INSERT INTO bolum (name , dept_std_id) VALUES ('${req.body.bolumadi}' , ${req.body.deptStudentId})`);   
         res.status(201).json({
             status : "success", 
         });
