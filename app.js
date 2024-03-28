@@ -2,6 +2,7 @@ const express = require("express");
 const env_variables = require('dotenv');
 const database = require('./database.js');
 const ogrenciRoute = require("./routes/ogrenciRoute.js");
+const bolumRoute = require('./routes/bolumRoute.js');
 
 const app = express();
 app.use(express.json()); 
@@ -16,6 +17,7 @@ database.connectDB();
 database.createDatabase();
 
 app.use('/ogrenci' , ogrenciRoute);
+app.use('/bolum' , bolumRoute);
 
 
 app.listen(3000 , ()=>{
