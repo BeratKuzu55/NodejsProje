@@ -3,11 +3,12 @@ const env_variables = require('dotenv');
 const database = require('./database.js');
 const ogrenciRoute = require("./routes/ogrenciRoute.js");
 const bolumRoute = require('./routes/bolumRoute.js');
+const databaseController = require('./controllers/databaseController.js');
+
 
 const app = express();
 app.use(express.json()); 
 app.use(express.urlencoded({extended : true}));  // req.body ile bilgileri alabilmek için kullandığımız express middleware'i
-
 
 app.use("*" , (req , res , next) => {
     next();
@@ -15,6 +16,8 @@ app.use("*" , (req , res , next) => {
 
 database.connectDB();
 database.createDatabase();
+
+databaseController.haftalikRaporVer();
 
 app.use('/ogrenci' , ogrenciRoute);
 app.use('/bolum' , bolumRoute);
