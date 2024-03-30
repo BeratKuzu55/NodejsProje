@@ -16,12 +16,10 @@ app.use("*" , (req , res , next) => {
 
 database.connectDB();
 database.createDatabase();
-
-databaseController.haftalikRaporVer();
+databaseController.raporZamanKontrol();
 
 app.use('/ogrenci' , ogrenciRoute);
 app.use('/bolum' , bolumRoute);
-
 
 app.listen(3000 , ()=>{
     console.log("project has started at port 3000");
