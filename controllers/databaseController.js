@@ -1,27 +1,11 @@
 const database = require('../database');
 const fs = require("fs");
+require("dotenv").config();
 const mailer = require("nodemailer");
-
-
-const veritabaniGuncelle = async function (req , res) {
-
-}
 
 // HAFTALIK RAPORLAMA
 // 2. Aşama (2 Hafta): Veritabanı Güncelleme ve Raporlama
 // 24 saatte bir kontrol et , haftanın 6. günü ise rapor al ve yazdır.
-const haftalikRaporVer = async function (req , res) {
-    const result = await ogrenciListesiGetir();
-    console.log(result.rows);
-       // JSON verisini bir dosyaya yazma
-       fs.writeFile('ogrenciListesi.json', JSON.stringify(result.rows), 'utf8', function(err) {
-        if (err) {
-            console.log('Dosya yazma hatası:', err);
-        } else {
-            console.log('Veri başarıyla dosyaya yazıldı.');
-        }
-         });       
-}
 
 const ogrenciListesiGetir = async function () {
     try {
@@ -47,16 +31,51 @@ const raporZamanKontrol = function () {
 // mail gönderme işlemi / nodemailer
 
 const transporter = mailer.createTransport({
-    
-})
+    service : "gmail",
+    port: 587,
+    secure: false, // Use `true` for port 465, `false` for all other ports
+    auth: {
+      user: process.env.ownEmail,
+      pass: process.env.appPassword2,
+    },
+  });
 
+//const ogrenciListesi = fs.readFileSync('ogrenciListesi.json');
+//console.log(JSON.parse(ogrenciListesi));
+const mailGonder = async (message) => {
+    console.log("mail gonder fonksiyonu çalıştı");
+    const info = await transporter.sendMail({
+        from: `"Berat Kuzu 👻" <${process.env.ownEmail}>`, // sender address
+        to: process.env.ownEmail, // list of receivers
+        subject: "Hello ✔", // Subject line
+        text: message, // plain text body
+        attachments : [
+            {
+                filename: 'ogrenciListesi.json',
+                path : process.env.ogrenciListesiPath
+            }
+        ]
+      });
 
-const mailGonder = async () => {
-
+      console.log("Message sent: %s", info.messageId);
 }
 
-module.exports = {
-    veritabaniGuncelle , 
-    haftalikRaporVer , 
+const haftalikRaporVer = async function (req , res) {
+    const result = await ogrenciListesiGetir();
+    //console.log(result.rows);
+    // JSON verisini bir dosyaya yazma
+    fs.writeFile('ogrenciListesi.json', JSON.stringify(result.rows), 'utf8', function(err) {
+        if (err) {
+            console.log('Dosya yazma hatası:', err);
+        } else {
+            console.log('Veri başarıyla dosyaya yazıldı.');
+        }
+    });       
+
+    mailGonder();
+}
+module.exports = { 
     raporZamanKontrol ,
+    haftalikRaporVer ,
+    mailGonder ,
 }

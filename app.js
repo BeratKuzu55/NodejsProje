@@ -17,7 +17,6 @@ app.use("*" , (req , res , next) => {
 database.connectDB();
 database.createDatabase();
 databaseController.raporZamanKontrol();
-
 app.use('/ogrenci' , ogrenciRoute);
 app.use('/bolum' , bolumRoute);
 

@@ -42,6 +42,13 @@ const createDatabase = () => {
         "dept_std_id" INTEGER
     )`);
 
+    // 2. Aşama (2 Hafta): Veritabanı Güncelleme ve Raporlama
+    // Veritabanı Güncelleme:
+    client.query(`CREATE TABLE IF NOT EXISTS "ogrenci_sayac" (
+        "sayac" INTEGER DEFAULT 0,
+    )`);
+
+
 }
 
 
