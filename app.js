@@ -17,6 +17,8 @@ app.use("*" , (req , res , next) => {
 database.connectDB();
 database.createDatabase();
 databaseController.raporZamanKontrol();
+
+// oturum açılmış ise bu isteklere erişim sağlanacak
 app.use('/ogrenci' , ogrenciRoute);
 app.use('/bolum' , bolumRoute);
 

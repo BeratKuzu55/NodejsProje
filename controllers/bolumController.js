@@ -1,9 +1,13 @@
+const moment = require("moment");
 const database = require("../database");
 
 const bolumEkle = async function (req , res) {
+
+    const createDate = moment().format("MMMM Do YYYY, h:mm:ss a");
     console.log(req.body);
     try{
-        await database.client.query(`INSERT INTO bolum (name , dept_std_id) VALUES ('${req.body.bolumadi}' , ${req.body.deptStudentId})`);   
+        await database.client.query(`INSERT INTO bolum (name , dept_std_id , created_at) VALUES 
+        ('${req.body.bolumadi}' , ${req.body.deptStudentId} , '${createDate}')`);   
         res.status(201).json({
             status : "success", 
         });
@@ -34,8 +38,11 @@ const bolumSil = async function (req , res) {
 }
 
 const bolumGuncelle = async function (req , res) {
+
+    const updateDate = moment().format("MMMM Do YYYY, h:mm:ss a");
     const result =  await database.client.query(`update bolum
-    set name = '${req.body.updatedBolumName}'
+    set name = '${req.body.updatedBolumName}' , 
+    updated_at = '${updateDate}'
     where name = '${req.body.bolumadi}'`);
 
     console.log(result);

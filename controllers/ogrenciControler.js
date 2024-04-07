@@ -1,16 +1,19 @@
 const database = require("../database");
+const moment = require("moment");
 const databaseController = require("./databaseController");
 // öğrenci ekleme işlemi
 const ogrenciEkle = async function (req , res) {
     const {ogrenciAdi , email} = req.body;
-
-    //console.log(req.body);
+    console.log(req.body);
+    const create_date = moment().format('MMMM Do YYYY, h:mm:ss a');
+    console.log(await databaseController.ogrenciListesiGetir());
     try{
-        await database.client.query(`INSERT INTO ogrenci (name, email) VALUES ('${ogrenciAdi}', '${email}')`); 
+        //console.log(typeof Date.parse(moment().format('MMMM Do YYYY, h:mm:ss a')));
+        console.log(create_date);
+        await database.client.query(`INSERT INTO ogrenci (name, email , created_at) VALUES ('${ogrenciAdi}', '${email}' , '${create_date}')`); 
         //  Veritabanı Güncelleme: sayaç değişkeni, öğrenci eklendikçe ve silindikçe güncellenecektir
         await database.client.query(`UPDATE ogrenci_sayac SET ogrenci_sayac = ogrenci_sayac + 1`);
         //databaseController.mailGonder("selam!!!");
-        console.log("selam");
         res.status(201).json({
             status : "success", 
         });
@@ -47,9 +50,12 @@ const ogrenciSil = async function (req , res) {
 }
 
 const ogrenciGuncelle = async function(req , res){
-    const result =  await database.client.query(`update ogrenci
-    set name = '${req.body.name}',
-        email = '${req.body.updatedEmail}'
+
+    const update_date = moment().format('MMMM Do YYYY, h:mm:ss a');
+    console.log(update_date);
+    const result =  await database.client.query(`update ogrenci set name = '${req.body.name}',
+        email = '${req.body.updatedEmail}' , 
+        updated_at = '${update_date}' 
     where email = '${req.body.email}'`);
 
     console.log(result);

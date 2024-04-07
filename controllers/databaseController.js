@@ -43,7 +43,6 @@ const transporter = mailer.createTransport({
 //const ogrenciListesi = fs.readFileSync('ogrenciListesi.json');
 //console.log(JSON.parse(ogrenciListesi));
 const mailGonder = async (message) => {
-    console.log("mail gonder fonksiyonu çalıştı");
     const info = await transporter.sendMail({
         from: `"Berat Kuzu 👻" <${process.env.ownEmail}>`, // sender address
         to: process.env.ownEmail, // list of receivers
@@ -78,4 +77,5 @@ module.exports = {
     raporZamanKontrol ,
     haftalikRaporVer ,
     mailGonder ,
+    ogrenciListesiGetir ,
 }
